@@ -141,15 +141,7 @@ CI/CD setup
 GitOps deployment
 Observability integration
 Security hardening
----
-Resume Summary
-Designed and implemented a production-grade AI Wealth Management platform using AWS EKS, Terraform, Docker, Kubernetes, Redis, MySQL, GitHub Actions, ArgoCD, and Datadog. Built scalable microservices, AI-driven recommendation systems, GitOps-based CI/CD pipelines, and a conversational advisory assistant.
+
 ---
 Conclusion
 FinPilot AI demonstrates real-world DevOps engineering capabilities, combining cloud-native design, automation, observability, and AI integration in a fintech-grade architecture.
-This project is ideal for showcasing:
-DevOps expertise
-Cloud architecture skills
-Kubernetes production experience
-CI/CD and GitOps knowledge
-AI-enabled platform design
