@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: finpilot-prod
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/your-org/finpilot-ai-app.git
+    targetRevision: main
+    path: helm/finpilot
+    helm:
+      valueFiles:
+        - ../../../../finpilot-ai-gitops/helm-values/prod/values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: finpilot-prod
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

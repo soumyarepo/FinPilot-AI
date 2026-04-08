@@ -1,0 +1,39 @@
+name: CI - portfolio-service
+on:
+  push:
+    paths:
+      - 'services/portfolio-service/**'
+      - '.github/workflows/ci-portfolio-service.yml'
+  pull_request:
+    paths:
+      - 'services/portfolio-service/**'
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: services/portfolio-service
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pytest
+
+      - name: Run tests
+        run: pytest app/tests -q
+
+      - name: Build Docker image
+        run: docker build -t portfolio-service:$GITHUB_SHA .
+
+      - name: Trivy scan
+        uses: aquasecurity/trivy-action@0.24.0
+        with:
+          image-ref: 'portfolio-service:$GITHUB_SHA'
+          format: 'table'

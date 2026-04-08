@@ -1,0 +1,22 @@
+global:
+  environment: prod
+
+services:
+  auth-service:
+    enabled: true
+    image: "REPLACE_ME.dkr.ecr.ap-south-1.amazonaws.com/auth-service"
+    tag: "latest"
+    port: 8080
+  advisory-assistant-service:
+    enabled: true
+    image: "REPLACE_ME.dkr.ecr.ap-south-1.amazonaws.com/advisory-assistant-service"
+    tag: "latest"
+    port: 8080
+
+frontend:
+  image: "REPLACE_ME.dkr.ecr.ap-south-1.amazonaws.com/frontend"
+  tag: "latest"
+  port: 80
+
+ingress:
+  host: finpilot-prod.example.com

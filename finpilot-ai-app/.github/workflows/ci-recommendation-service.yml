@@ -1,0 +1,39 @@
+name: CI - recommendation-service
+on:
+  push:
+    paths:
+      - 'services/recommendation-service/**'
+      - '.github/workflows/ci-recommendation-service.yml'
+  pull_request:
+    paths:
+      - 'services/recommendation-service/**'
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: services/recommendation-service
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pytest
+
+      - name: Run tests
+        run: pytest app/tests -q
+
+      - name: Build Docker image
+        run: docker build -t recommendation-service:$GITHUB_SHA .
+
+      - name: Trivy scan
+        uses: aquasecurity/trivy-action@0.24.0
+        with:
+          image-ref: 'recommendation-service:$GITHUB_SHA'
+          format: 'table'
