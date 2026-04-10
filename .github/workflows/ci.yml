@@ -12,6 +12,7 @@ jobs:
   checkout:
     name: Stage 1 - Checkout Code
     runs-on: ubuntu-latest
+
     steps:
       - name: Print Stage Start
         run: |
@@ -22,7 +23,7 @@ jobs:
 
       - name: Print Repository Structure
         run: |
-          echo "Listing files in repository..."
+          echo "Listing files in repository"
           pwd
           ls -R
 
@@ -34,23 +35,21 @@ jobs:
     name: Stage 2 - Build Frontend Application
     runs-on: ubuntu-latest
     needs: checkout
-    defaults:
-      run:
-        working-directory: ./finpilot-ai-app/frontend
+
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
       - name: Print Stage Start
         run: |
           echo "===== STAGE 2 - BUILD STARTED ====="
 
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Verify Working Directory
+      - name: Verify Repository Structure
         run: |
           echo "Current directory"
           pwd
-          echo "Files inside frontend"
-          ls -la
+          echo "Repository files"
+          ls -R
 
       - name: Setup Node.js Environment
         uses: actions/setup-node@v4
@@ -58,13 +57,15 @@ jobs:
           node-version: '18'
 
       - name: Install Dependencies
+        working-directory: ./finpilot-ai-app/frontend
         run: |
-          echo "Installing dependencies..."
+          echo "Installing dependencies"
           npm install
 
       - name: Build Application
+        working-directory: ./finpilot-ai-app/frontend
         run: |
-          echo "Building application..."
+          echo "Building application"
           npm run build
 
       - name: Print Stage End
