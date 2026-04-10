@@ -9,18 +9,22 @@ on:
       - main
 
 jobs:
-
   app-build:
-    name: Build Application
+    name: Build Frontend
     runs-on: ubuntu-latest
 
     defaults:
       run:
-        working-directory: finpilot-ai-app
+        working-directory: finpilot-ai-app/frontend
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+
+      - name: Debug files
+        run: |
+          pwd
+          ls -la
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -32,37 +36,3 @@ jobs:
 
       - name: Build Application
         run: npm run build
-
-  infra-check:
-    name: Infra Validation
-    runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: finpilot-ai-infra
-
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Check Infra Folder
-        run: |
-          echo "Infra directory present"
-          ls -la
-
-  gitops-check:
-    name: GitOps Validation
-    runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: finpilot-ai-gitops
-
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Check GitOps Folder
-        run: |
-          echo "GitOps directory present"
-          ls -la
