@@ -2,37 +2,69 @@ name: FinPilot AI CI Pipeline
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   pull_request:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
-  app-build:
-    name: Build Frontend
+
+  checkout:
+    name: Stage 1 - Checkout Code
     runs-on: ubuntu-latest
+
+    steps:
+      - name: Print Stage Start
+        run: echo "===== STAGE 1: CHECKOUT STARTED ====="
+
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Print Repository Structure
+        run: |
+          echo "Listing files in repository..."
+          pwd
+          ls -R
+
+      - name: Print Stage End
+        run: echo "===== STAGE 1: CHECKOUT COMPLETED ====="
+
+  build:
+    name: Stage 2 - Build Frontend Application
+    runs-on: ubuntu-latest
+    needs: checkout
 
     defaults:
       run:
         working-directory: finpilot-ai-app/frontend
 
     steps:
-      - name: Checkout Code
+      - name: Print Stage Start
+        run: echo "===== STAGE 2: BUILD STARTED ====="
+
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Debug files
+      - name: Verify Working Directory
         run: |
+          echo "Current directory:"
           pwd
+          echo "Files inside frontend:"
           ls -la
 
-      - name: Setup Node.js
+      - name: Setup Node.js Environment
         uses: actions/setup-node@v4
         with:
           node-version: 18
 
       - name: Install Dependencies
-        run: npm install
+        run: |
+          echo "Installing dependencies..."
+          npm install
 
       - name: Build Application
-        run: npm run build
+        run: |
+          echo "Building application..."
+          npm run build
+
+      - name: Print Stage End
+        run: echo "===== STAGE 2: BUILD COMPLETED ====="
