@@ -1,0 +1,79 @@
+name: FinPilot AI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  app-ci:
+    name: App CI
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: finpilot-ai-app
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Show repository structure
+        run: ls -R
+
+      - name: Verify app directory exists
+        run: |
+          if [ ! -d "." ]; then
+            echo "Application directory not found"
+            exit 1
+          fi
+          echo "Application directory found"
+
+  infra-ci:
+    name: Infra CI
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: finpilot-ai-infra
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Show repository structure
+        run: ls -R
+
+      - name: Verify infra directory exists
+        run: |
+          if [ ! -d "." ]; then
+            echo "Infrastructure directory not found"
+            exit 1
+          fi
+          echo "Infrastructure directory found"
+
+  gitops-ci:
+    name: GitOps CI
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: finpilot-ai-gitops
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Show repository structure
+        run: ls -R
+
+      - name: Verify gitops directory exists
+        run: |
+          if [ ! -d "." ]; then
+            echo "GitOps directory not found"
+            exit 1
+          fi
+          echo "GitOps directory found"
