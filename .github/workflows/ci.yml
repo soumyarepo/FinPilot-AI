@@ -12,7 +12,6 @@ jobs:
   checkout:
     name: Stage 1 - Checkout Code
     runs-on: ubuntu-latest
-
     steps:
       - name: Print Stage Start
         run: echo "===== STAGE 1: CHECKOUT STARTED ====="
@@ -33,11 +32,9 @@ jobs:
     name: Stage 2 - Build Frontend Application
     runs-on: ubuntu-latest
     needs: checkout
-
     defaults:
       run:
-        working-directory: finpilot-ai-app/frontend
-
+        working-directory: ./finpilot-ai-app/frontend
     steps:
       - name: Print Stage Start
         run: echo "===== STAGE 2: BUILD STARTED ====="
@@ -55,7 +52,7 @@ jobs:
       - name: Setup Node.js Environment
         uses: actions/setup-node@v4
         with:
-          node-version: "18"
+          node-version: '18'
 
       - name: Install Dependencies
         run: |
