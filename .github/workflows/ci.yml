@@ -1,4 +1,4 @@
-name: FinPilot AI Pipeline
+name: FinPilot AI CI Pipeline
 
 on:
   push:
@@ -9,8 +9,9 @@ on:
       - main
 
 jobs:
-  app-ci:
-    name: App CI
+
+  app-build:
+    name: Build Application
     runs-on: ubuntu-latest
 
     defaults:
@@ -18,22 +19,22 @@ jobs:
         working-directory: finpilot-ai-app
 
     steps:
-      - name: Checkout source code
+      - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Show repository structure
-        run: ls -R
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
 
-      - name: Verify app directory exists
-        run: |
-          if [ ! -d "." ]; then
-            echo "Application directory not found"
-            exit 1
-          fi
-          echo "Application directory found"
+      - name: Install Dependencies
+        run: npm install
 
-  infra-ci:
-    name: Infra CI
+      - name: Build Application
+        run: npm run build
+
+  infra-check:
+    name: Infra Validation
     runs-on: ubuntu-latest
 
     defaults:
@@ -41,22 +42,16 @@ jobs:
         working-directory: finpilot-ai-infra
 
     steps:
-      - name: Checkout source code
+      - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Show repository structure
-        run: ls -R
-
-      - name: Verify infra directory exists
+      - name: Check Infra Folder
         run: |
-          if [ ! -d "." ]; then
-            echo "Infrastructure directory not found"
-            exit 1
-          fi
-          echo "Infrastructure directory found"
+          echo "Infra directory present"
+          ls -la
 
-  gitops-ci:
-    name: GitOps CI
+  gitops-check:
+    name: GitOps Validation
     runs-on: ubuntu-latest
 
     defaults:
@@ -64,16 +59,10 @@ jobs:
         working-directory: finpilot-ai-gitops
 
     steps:
-      - name: Checkout source code
+      - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Show repository structure
-        run: ls -R
-
-      - name: Verify gitops directory exists
+      - name: Check GitOps Folder
         run: |
-          if [ ! -d "." ]; then
-            echo "GitOps directory not found"
-            exit 1
-          fi
-          echo "GitOps directory found"
+          echo "GitOps directory present"
+          ls -la
